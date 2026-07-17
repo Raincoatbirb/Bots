@@ -251,8 +251,10 @@ public class TwilightBot
         }
 
         AnsiConsole.Write(new Panel(table).Header("[cyan]Gear Bag[/]").Border(BoxBorder.Rounded));
+        AnsiConsole.Write(connPanel);
+        AnsiConsole.Write(modPanel);
+        AnsiConsole.MarkupLine("\n[dim]Press C/D for connection, T to toggle AutoMod, Q to Quit[/]");
 
-        AnsiConsole.MarkupLine("\n[dim]Press A to Add command | E to Edit | D to Delete | Q to Quit[/]");
 
         if (Console.KeyAvailable)
         {
