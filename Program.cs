@@ -132,7 +132,7 @@ public class TwilightBot
             }
 
             await Task.Delay(100);
-        }
+       }
     }
 
     private void ShowTabMenu()
@@ -168,7 +168,7 @@ public class TwilightBot
         var leftPanel = new Panel(chatText)
             .Header("[cyan]Hyrule Chat[/]")
             .Border(BoxBorder.Rounded)
-            .BorderColor(Color.Cyan1);
+            .Expand();
 
         var statsTable = new Table().Border(TableBorder.Rounded).BorderColor(Color.Magenta1);
         statsTable.AddColumn("Stat");
@@ -193,19 +193,8 @@ public class TwilightBot
             .Header("[green]Wolf Link Items[/]")
             .Border(BoxBorder.Rounded);
 
-        var rightPanel = new Layout("right")
-            .SplitColumn(
-                new Layout("top").Update(rightTop).Size(12),
-                new Layout("bottom").Update(rightBottom)
-            );
-
-        var mainLayout = new Layout("root")
-            .SplitRow(
-                new Layout("left").Update(leftPanel),
-                rightPanel
-            );
-
-        AnsiConsole.Write(mainLayout);
+        var rows = new Rows(leftPanel, rightTop, rightBottom);
+        AnsiConsole.Write(rows);
 
         AnsiConsole.MarkupLine("\n[dim]Press C to Connect | D to Disconnect | 1-4 to switch tabs | Q to Quit[/]");
 
@@ -239,9 +228,7 @@ public class TwilightBot
             .Border(BoxBorder.Rounded);
 
         AnsiConsole.Write(connPanel);
-        AnsiConsole.Write(modPanel);
-
-        AnsiConsole.MarkupLine("\n[dim]Press C/D for connection, T to toggle AutoMod, Q to Quit[/]");
+                AnsiConsole.Write(modPanel);       AnsiConsole.MarkupLine("\n[dim]Press C/D for connection, T to toggle AutoMod, Q to Quit[/]");
 
         if (Console.KeyAvailable)
         {
@@ -360,10 +347,9 @@ public class TwilightBot
         _client?.Close();
         AddChat("Disconnected");
     }
-
     private async Task ReceiveLoopAsync()
     {
-        while (_connected && _reader != null)
+       while (_connected && _reader != null)
         {
             try
             {
@@ -493,7 +479,7 @@ public class TwilightBot
         {
             _commands.Commands = new List<Command>
             {
-                new() { Name = "!discord", Response = "Join our Discord: discord.gg/example", Cooldown = 5 },
+               new() { Name = "!discord", Response = "Join our Discord: discord.gg/example", Cooldown = 5 },
                 new() { Name = "!socials", Response = "Follow me on Twitter @example", Cooldown = 5 },
                 new() { Name = "!uptime", Response = "Stream has been live for {uptime}", Cooldown = 10 }
             };
@@ -507,3 +493,4 @@ public class TwilightBot
         File.WriteAllText("commands.json", json);
     }
 }
+
