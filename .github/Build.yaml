@@ -2,7 +2,9 @@ name: Build Windows EXE
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -10,25 +12,24 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
+    - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0'
-        
+    
     - name: Restore dependencies
       run: dotnet restore
-      
+    
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      
-    - name: Publish Windows EXE
-      run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish
-      
+    
+    - name: Publish
+      run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=false -o ./dist
+    
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: TwitchBot-Windows
-        path: ./publish/TwitchBot.exe
+        name: TwitchBot
+        path: ./dist/TwitchBot.exe
